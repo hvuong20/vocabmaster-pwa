@@ -2,7 +2,7 @@
   "name": "VocabMaster — Học Từ Vựng Tiếng Anh",
   "short_name": "VocabMaster",
   "description": "Ứng dụng học từ vựng tiếng Anh B2 với Flashcard, Quiz và Text-to-Speech",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0F0A1E",
   "theme_color": "#7C3AED",

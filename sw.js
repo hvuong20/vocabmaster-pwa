@@ -1,15 +1,15 @@
-const CACHE_NAME = 'vocabmaster-v5';
+const CACHE_NAME = 'vocabmaster-v6';
 const NOTIF_CACHE = 'vm-notif-v1';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/css/style.css',
-  '/js/data.js',
-  '/js/data-c1.js',
-  '/js/data-c2.js',
-  '/js/data-ielts.js',
-  '/js/app.js',
-  '/manifest.json'
+  './',
+  './index.html',
+  './css/style.css',
+  './js/data.js',
+  './js/data-c1.js',
+  './js/data-c2.js',
+  './js/data-ielts.js',
+  './js/app.js',
+  './manifest.json'
 ];
 
 self.addEventListener('install', e => {
