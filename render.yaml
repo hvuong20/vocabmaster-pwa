@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: vocabmaster-push
+    runtime: node
+    rootDir: push-server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: VAPID_PUBLIC_KEY
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false
+      - key: VAPID_EMAIL
+        sync: false
+      - key: RENDER_EXTERNAL_URL
+        sync: false

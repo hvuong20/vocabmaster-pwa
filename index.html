@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0F0A1E">
+  <meta name="description" content="VocabMaster — Ứng dụng học từ vựng tiếng Anh B2 với Flashcard, Quiz và Phát âm">
+  <title>VocabMaster — Học Từ Vựng B2</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ═══ HEADER ═══ -->
+  <header id="app-header">
+    <button id="header-back" onclick="goBack()" aria-label="Back">‹</button>
+    <div id="header-center">
+      <div class="logo">Vocab<span>Master</span></div>
+    </div>
+    <div id="header-right"></div>
+  </header>
+
+  <!-- ═══ SCREENS ═══ -->
+  <main id="screens">
+
+    <!-- HOME -->
+    <section id="screen-home" class="screen active">
+      <p class="greeting">Chào buổi sáng 👋</p>
+      <h1 class="greeting-name">Học tiếng Anh <span>mỗi ngày</span></h1>
+
+      <div class="stats-row">
+        <div class="stat-card streak">
+          <div class="stat-value" id="home-streak">0</div>
+          <div class="stat-label">🔥 Streak</div>
+        </div>
+        <div class="stat-card words">
+          <div class="stat-value" id="home-words">0</div>
+          <div class="stat-label">📝 Đã học</div>
+        </div>
+        <div class="stat-card quiz">
+          <div class="stat-value" id="home-quiz">0%</div>
+          <div class="stat-label">🎯 Quiz</div>
+        </div>
+      </div>
+
+      <div class="daily-goal">
+        <h3>Mục tiêu hôm nay</h3>
+        <div class="progress-bar"><div class="progress-fill" id="daily-fill" style="width:0%"></div></div>
+        <p class="progress-text" id="daily-text">0 / 10 từ</p>
+      </div>
+
+      <div class="level-switch">
+        <button class="level-btn active" data-level="B2" onclick="switchLevel('B2')">B2</button>
+        <button class="level-btn" data-level="C1" onclick="switchLevel('C1')">C1</button>
+        <button class="level-btn" data-level="C2" onclick="switchLevel('C2')">C2</button>
+        <button class="level-btn" data-level="IELTS" onclick="switchLevel('IELTS')">IELTS</button>
+      </div>
+      <h2 class="section-title">Chủ đề</h2>
+      <div class="quick-topics" id="home-topics"></div>
+    </section>
+
+    <!-- FLASHCARD -->
+    <section id="screen-flashcard" class="screen">
+      <p class="fc-counter" id="fc-counter">1 / 12</p>
+      <div class="fc-wrapper">
+        <div class="fc-card" id="fc-card" onclick="Flashcard.flip()">
+          <div class="fc-face fc-front">
+            <div class="fc-word" id="fc-word"></div>
+            <div class="fc-phonetic" id="fc-phonetic"></div>
+            <button class="fc-speak-btn" id="fc-speak" onclick="event.stopPropagation(); Flashcard.speak()">🔊</button>
+            <p class="fc-hint">Nhấn để xem nghĩa</p>
+          </div>
+          <div class="fc-face fc-back">
+            <div class="fc-meaning" id="fc-meaning"></div>
+            <p class="fc-example" id="fc-example"></p>
+          </div>
+        </div>
+      </div>
+      <div class="fc-actions">
+        <button class="fc-action-btn learn" onclick="Flashcard.mark(false)">🔄 Học lại</button>
+        <button class="fc-action-btn know" onclick="Flashcard.mark(true)">✅ Đã biết</button>
+      </div>
+    </section>
+
+    <!-- QUIZ SELECT -->
+    <section id="screen-quiz" class="screen">
+      <div class="level-switch" style="margin-bottom:12px">
+        <button class="level-btn active" data-level="B2" onclick="switchLevel('B2')">B2</button>
+        <button class="level-btn" data-level="C1" onclick="switchLevel('C1')">C1</button>
+        <button class="level-btn" data-level="C2" onclick="switchLevel('C2')">C2</button>
+        <button class="level-btn" data-level="IELTS" onclick="switchLevel('IELTS')">IELTS</button>
+      </div>
+      <h2 class="section-title" style="text-align:center;margin-top:8px;">Chọn chủ đề Quiz</h2>
+      <p style="text-align:center;color:var(--text-secondary);font-size:14px;margin-bottom:8px;">Trả lời 10 câu hỏi trắc nghiệm</p>
+      <div class="quiz-topic-grid" id="quiz-topics"></div>
+      <div style="text-align:center;margin-top:16px;">
+        <button class="btn-primary" onclick="Quiz.startRandom()">🎲 Quiz ngẫu nhiên</button>
+      </div>
+    </section>
+
+    <!-- QUIZ PLAYING -->
+    <section id="screen-quiz-play" class="screen">
+      <div class="quiz-header">
+        <span class="quiz-score" id="qz-score">0 điểm</span>
+        <span class="quiz-score" id="qz-counter">1 / 10</span>
+      </div>
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qz-bar" style="width:0%"></div></div>
+      <div class="quiz-question">
+        <p class="quiz-prompt">Nghĩa của từ này là gì?</p>
+        <div class="quiz-word" id="qz-word"></div>
+        <div class="quiz-phonetic" id="qz-phonetic"></div>
+      </div>
+      <div class="quiz-options" id="qz-options"></div>
+    </section>
+
+    <!-- QUIZ RESULT -->
+    <section id="screen-quiz-result" class="screen">
+      <div class="quiz-result">
+        <div class="quiz-result-icon" id="qr-icon">🎉</div>
+        <h2 class="quiz-result-title" id="qr-title">Tuyệt vời!</h2>
+        <p class="quiz-result-score" id="qr-score">8 / 10 câu đúng</p>
+        <div class="quiz-result-bar"><div class="quiz-result-fill" id="qr-bar" style="width:0%"></div></div>
+        <div class="btn-group">
+          <button class="btn-outline" onclick="navigateTo('quiz')">🏠 Quay lại</button>
+          <button class="btn-primary" onclick="Quiz.restart()">🔄 Làm lại</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section id="screen-progress" class="screen">
+      <div class="progress-hero">
+        <div class="progress-streak" id="pg-streak">0</div>
+        <div class="progress-streak-label">🔥 Ngày liên tục</div>
+      </div>
+      <div class="progress-stats">
+        <div class="p-stat"><div class="p-stat-value" id="pg-total">0</div><div class="p-stat-label">Tổng từ đã học</div></div>
+        <div class="p-stat"><div class="p-stat-value" id="pg-today">0</div><div class="p-stat-label">Hôm nay</div></div>
+        <div class="p-stat"><div class="p-stat-value" id="pg-quizzes">0</div><div class="p-stat-label">Lượt Quiz</div></div>
+        <div class="p-stat"><div class="p-stat-value" id="pg-avg">0%</div><div class="p-stat-label">Trung bình Quiz</div></div>
+      </div>
+      <h2 class="section-title">Tiến trình theo chủ đề</h2>
+      <div class="topic-progress-list" id="pg-topics"></div>
+      <div class="danger-zone">
+        <button class="btn-danger" onclick="resetProgress()">🗑️ Xóa toàn bộ tiến trình</button>
+      </div>
+    </section>
+
+    <!-- REMINDER -->
+    <section id="screen-reminder" class="screen">
+      <h2 class="section-title" style="margin-top:8px">🔔 Nhắc nhở từ vựng</h2>
+      <p class="reminder-subtitle">Thông báo sẽ hiện trên đồng hồ thông minh nếu bật mirror thông báo</p>
+
+      <!-- Server URL (iPhone mode) -->
+      <div class="reminder-card">
+        <div class="reminder-label">🖥️ Push Server URL <span class="badge-optional">iPhone</span></div>
+        <div class="reminder-hint" style="margin-bottom:10px">
+          Nhập URL Render.com để nhận thông báo kể cả khi app đóng. Để trống nếu dùng Android.
+        </div>
+        <div class="server-url-row">
+          <input type="url" id="server-url-input" class="server-url-input"
+                 placeholder="https://vocabmaster-push.onrender.com"
+                 aria-label="Push server URL"
+                 inputmode="url" autocapitalize="none" autocorrect="off">
+          <button class="btn-save-url" onclick="NotificationScheduler.setServerUrl(document.getElementById('server-url-input').value); showToast('💾 Đã lưu URL')">Lưu</button>
+        </div>
+        <div class="server-status" id="server-status"></div>
+      </div>
+
+      <!-- Toggle on/off -->
+      <div class="reminder-card">
+        <div class="reminder-row">
+          <div>
+            <div class="reminder-label">Bật nhắc nhở</div>
+            <div class="reminder-hint" id="notif-status-text">Chưa bật</div>
+          </div>
+          <label class="toggle-switch" aria-label="Bật tắt nhắc nhở">
+            <input type="checkbox" id="notif-toggle" onchange="NotificationScheduler.onToggle(this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Settings panel -->
+      <div class="reminder-card">
+        <div class="reminder-label">Nhắc mỗi</div>
+        <div class="chip-group" id="interval-group">
+          <button class="chip-btn" data-min="15"  onclick="NotificationScheduler.setIntervalPref(15)">15 phút</button>
+          <button class="chip-btn" data-min="30"  onclick="NotificationScheduler.setIntervalPref(30)">30 phút</button>
+          <button class="chip-btn" data-min="60"  onclick="NotificationScheduler.setIntervalPref(60)">1 giờ</button>
+          <button class="chip-btn" data-min="120" onclick="NotificationScheduler.setIntervalPref(120)">2 giờ</button>
+        </div>
+
+        <div class="reminder-divider"></div>
+
+        <div class="reminder-label">Giờ hoạt động</div>
+        <div class="time-range">
+          <div class="time-input-wrap">
+            <span class="time-label">Từ</span>
+            <input type="time" id="notif-start" class="time-input" value="08:00"
+                   aria-label="Giờ bắt đầu"
+                   onchange="NotificationScheduler.setStartHour(this.value)">
+          </div>
+          <span class="time-sep">—</span>
+          <div class="time-input-wrap">
+            <span class="time-label">Đến</span>
+            <input type="time" id="notif-end" class="time-input" value="22:00"
+                   aria-label="Giờ kết thúc"
+                   onchange="NotificationScheduler.setEndHour(this.value)">
+          </div>
+        </div>
+
+        <div class="reminder-divider"></div>
+
+        <div class="reminder-label">Cấp độ từ vựng</div>
+        <div class="chip-group">
+          <button class="chip-btn" data-nlevel="B2" onclick="NotificationScheduler.setLevel('B2')">B2</button>
+          <button class="chip-btn" data-nlevel="C1" onclick="NotificationScheduler.setLevel('C1')">C1</button>
+          <button class="chip-btn" data-nlevel="C2" onclick="NotificationScheduler.setLevel('C2')">C2</button>
+        </div>
+
+        <div class="reminder-divider"></div>
+
+        <div class="reminder-label">Chủ đề</div>
+        <select id="notif-topic" class="topic-select" aria-label="Chọn chủ đề"
+                onchange="NotificationScheduler.setTopic(this.value)">
+          <option value="all">Tất cả chủ đề</option>
+        </select>
+      </div>
+
+      <button class="btn-primary" style="width:100%;margin-top:4px"
+              onclick="NotificationScheduler.preview()">
+        🔔 Xem thử từ ngay
+      </button>
+
+      <div class="reminder-info">
+        <p>📱 Bật <strong>Mirror thông báo</strong> trong app Xiaomi Wear để từ vựng hiện lên đồng hồ.</p>
+        <p>💡 Giữ trình duyệt chạy nền để nhận đúng giờ. Khi cài PWA sẽ hoạt động kể cả khi đóng app.</p>
+      </div>
+    </section>
+
+    <!-- LOOKUP -->
+    <section id="screen-lookup" class="screen">
+      <h2 class="section-title" style="margin-top:4px">🔍 Tra từ vựng</h2>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Nhập từ tiếng Anh để tra nghĩa, rồi lưu vào topic yêu thích.</p>
+      <div class="lookup-search-wrap">
+        <input id="lookup-input" type="text" class="lookup-input"
+               placeholder="Nhập từ tiếng Anh..."
+               autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false"
+               onkeydown="if(event.key==='Enter') WordLookup.search()">
+        <button class="lookup-btn" onclick="WordLookup.search()">🔍 Tra</button>
+      </div>
+      <div id="lookup-result" class="lookup-result hidden"></div>
+    </section>
+
+  </main>
+
+  <!-- ═══ BOTTOM NAV ═══ -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" data-screen="home" onclick="navigateTo('home')">
+      <span class="nav-icon">🏠</span> Trang chủ
+    </button>
+    <button class="nav-btn" data-screen="quiz" onclick="navigateTo('quiz')">
+      <span class="nav-icon">🧠</span> Quiz
+    </button>
+    <button class="nav-btn" data-screen="progress" onclick="navigateTo('progress')">
+      <span class="nav-icon">📊</span> Tiến trình
+    </button>
+    <button class="nav-btn" data-screen="lookup" onclick="navigateTo('lookup')">
+      <span class="nav-icon">🔍</span> Tra từ
+    </button>
+    <button class="nav-btn" data-screen="reminder" onclick="navigateTo('reminder')" id="nav-reminder">
+      <span class="nav-icon">🔔</span> Nhắc nhở
+    </button>
+  </nav>
+
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script src="js/data.js"></script>
+<script src="js/data-c1.js"></script>
+<script src="js/data-c2.js"></script>
+<script src="js/data-ielts.js"></script>
+<script src="js/app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
+</script>
+</body>
+</html>
