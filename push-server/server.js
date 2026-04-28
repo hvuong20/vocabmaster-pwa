@@ -82,6 +82,16 @@ const app = express();
 app.use(express.json());
 app.use(cors()); // cho phép PWA từ mọi origin gọi vào
 
+app.get('/', (_, res) => {
+  res.json({
+    name: 'VocabMaster Push Server',
+    status: 'running',
+    subscriptions: subscriptions.length,
+    words: totalWords,
+    endpoints: ['/config', '/subscribe', '/unsubscribe', '/preview', '/health']
+  });
+});
+
 app.get('/health', (_, res) => {
   res.json({ ok: true, subs: subscriptions.length, words: totalWords });
 });
