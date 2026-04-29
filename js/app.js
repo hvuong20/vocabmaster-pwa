@@ -876,13 +876,26 @@ const NotificationScheduler = {
     if (!('Notification' in window) || Notification.permission !== 'granted') {
       s.enabled = false; this._save(s); return;
     }
-    if (s.serverUrl && s.pushSubscription) {
-      // Server mode: re-sync settings khi mở app (đề phòng subscription thay đổi)
+    if (s.serverUrl) {
+      // Server mode: lấy subscription live từ browser, tự recover nếu expired
       try {
-        const sub = JSON.parse(s.pushSubscription);
-        await this._sendToServer(sub, s);
+        const reg = await navigator.serviceWorker.ready;
+        let sub = await reg.pushManager.getSubscription();
+        if (!sub) {
+          // Subscription đã expired hoặc bị xóa — subscribe lại
+          const vapidKey = await this._fetchVapidKey(s.serverUrl);
+          sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: this._urlB64ToUint8Array(vapidKey)
+          });
+        }
+        // Sync subscription hiện tại (dù mới hay cũ) lên server
+        const subJson = sub.toJSON ? sub.toJSON() : sub;
+        await this._sendToServer(subJson, s);
+        s.pushSubscription = JSON.stringify(subJson);
+        this._save(s);
       } catch (_) {}
-    } else if (!s.serverUrl) {
+    } else {
       // Local mode
       this._scheduleNext();
       await this._registerPeriodicSync(s.intervalMinutes);

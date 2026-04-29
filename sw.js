@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vocabmaster-v7';
+const CACHE_NAME = 'vocabmaster-v8';
 const NOTIF_CACHE = 'vm-notif-v1';
 const ASSETS = [
   './',
@@ -53,15 +53,16 @@ self.addEventListener('push', e => {
   const data = e.data ? e.data.json() : {};
   const word = data.word || 'VocabMaster';
   const body = [data.phonetic, data.meaning].filter(Boolean).join('\n');
+  const scope = self.registration.scope; // e.g. https://hvuong20.github.io/vocabmaster-pwa/
 
   e.waitUntil(
     self.registration.showNotification('📚 ' + word, {
       body,
-      icon: '/icons/icon-192.png',
-      badge: '/icons/icon-192.png',
+      icon: scope + 'icons/icon-192.png',
+      badge: scope + 'icons/icon-192.png',
       tag: 'vocab-word',
       renotify: true,
-      data: { url: '/' }
+      data: { url: scope }
     })
   );
 });
@@ -96,13 +97,14 @@ async function showScheduledWord() {
       headers: { 'Content-Type': 'application/json' }
     }));
 
+    const scope = self.registration.scope;
     await self.registration.showNotification('📚 ' + word.word, {
       body: word.phonetic + '\n' + word.meaning,
-      icon: '/icons/icon-192.png',
-      badge: '/icons/icon-192.png',
+      icon: scope + 'icons/icon-192.png',
+      badge: scope + 'icons/icon-192.png',
       tag: 'vocab-word',
       renotify: true,
-      data: { url: '/' }
+      data: { url: scope }
     });
   } catch (_) {}
 }
