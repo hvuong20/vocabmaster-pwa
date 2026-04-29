@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vocabmaster-v6';
+const CACHE_NAME = 'vocabmaster-v7';
 const NOTIF_CACHE = 'vm-notif-v1';
 const ASSETS = [
   './',
