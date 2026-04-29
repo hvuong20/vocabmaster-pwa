@@ -106,7 +106,7 @@ app.post('/subscribe', (req, res) => {
   const { subscription, settings } = req.body;
   if (!subscription?.endpoint) return res.status(400).json({ error: 'Invalid subscription' });
 
-  const defaults = { intervalMinutes: 30, startHour: 8, endHour: 22, level: 'B2', topicId: 'all', wordIndex: 0 };
+  const defaults = { intervalMinutes: 30, startHour: 8, endHour: 22, utcOffset: 0, level: 'B2', topicId: 'all', wordIndex: 0 };
   const merged   = { ...defaults, ...settings };
 
   const existing = subscriptions.find(s => s.subscription.endpoint === subscription.endpoint);
@@ -158,15 +158,19 @@ app.post('/unsubscribe', (req, res) => {
 cron.schedule('* * * * *', async () => {
   if (!subscriptions.length) return;
 
-  const now  = Date.now();
-  const hour = new Date().getHours();
+  const now     = Date.now();
+  const utcHour = new Date().getUTCHours(); // Render chạy UTC — không dùng getHours()
   let changed = false;
 
   for (const sub of [...subscriptions]) {
     const { settings, lastSentAt } = sub;
 
-    // Kiểm tra giờ hoạt động
-    if (hour < settings.startHour || hour >= settings.endHour) continue;
+    // Convert UTC sang local time của user dựa trên utcOffset (e.g. +7 cho Việt Nam)
+    const utcOffset = settings.utcOffset || 0;
+    const localHour = (utcHour + utcOffset + 24) % 24;
+
+    // Kiểm tra giờ hoạt động theo giờ local của user
+    if (localHour < settings.startHour || localHour >= settings.endHour) continue;
 
     // Kiểm tra interval
     const intervalMs = (settings.intervalMinutes || 30) * 60 * 1000;

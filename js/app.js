@@ -716,6 +716,7 @@ const NotificationScheduler = {
           intervalMinutes: settings.intervalMinutes,
           startHour:       settings.startHour,
           endHour:         settings.endHour,
+          utcOffset:       -(new Date().getTimezoneOffset() / 60), // +7 cho Việt Nam
           level:           settings.level,
           topicId:         settings.topicId
         }
