@@ -204,15 +204,24 @@ cron.schedule('* * * * *', async () => {
 
 // ── Self-ping để Render free tier không sleep ──
 // Render free tier sleep sau 15 phút không có request
-// Self-ping mỗi 14 phút giữ server luôn sống
+// Dùng https.get() (built-in) thay fetch() để tương thích mọi Node version
+// Ping mỗi 10 phút — an toàn hơn 14 phút (tránh race condition với timeout 15 phút)
+const https = require('https');
+const http  = require('http');
 const RENDER_URL = process.env.RENDER_EXTERNAL_URL;
 if (RENDER_URL) {
-  setInterval(() => {
-    fetch(RENDER_URL + '/health')
-      .then(() => console.log('🏓 Self-ping OK'))
-      .catch(() => {});
-  }, 14 * 60 * 1000);
-  console.log('🏓 Self-ping enabled:', RENDER_URL);
+  const pingFn = RENDER_URL.startsWith('https') ? https : http;
+  const pingInterval = setInterval(() => {
+    pingFn.get(RENDER_URL + '/health', (res) => {
+      console.log('🏓 Self-ping OK —', res.statusCode);
+    }).on('error', (e) => {
+      console.warn('🏓 Self-ping failed:', e.message);
+    });
+  }, 10 * 60 * 1000); // mỗi 10 phút
+  pingInterval.unref(); // không block process exit
+  console.log('🏓 Self-ping enabled (10 min):', RENDER_URL);
+} else {
+  console.warn('⚠️  RENDER_EXTERNAL_URL chưa set — server có thể sleep sau 15 phút không hoạt động');
 }
 
 // ── Start ──────────────────────────────────────

@@ -190,4 +190,30 @@ const TOPICS_IELTS = [
       { word: 'retrofit', phonetic: '/ˈret.rəʊˌfɪt/', meaning: 'Cải tạo, lắp đặt thêm thiết bị mới vào công trình cũ', example: 'The government plans to retrofit older vehicles with cleaner engine technology.' },
     ]
   },
+  {
+    id: 'ielts_others', name: 'Others', nameVi: 'Từ khác (Others)',
+    icon: '📌', color: '#64748B',
+    words: [
+      { word: 'albeit', phonetic: '/ɔːlˈbiː.ɪt/', meaning: 'Mặc dù, dù cho', example: 'The results were positive, albeit inconclusive.' },
+      { word: 'profoundly', phonetic: '/prəˈfaʊnd.li/', meaning: 'Sâu sắc, ảnh hưởng mạnh mẽ', example: 'The pandemic has profoundly changed the way people work.' },
+      { word: 'plausible', phonetic: '/ˈplɔː.zɪ.bəl/', meaning: 'Có vẻ hợp lý, đáng tin cậy', example: 'The scientist offered a plausible explanation for the anomaly.' },
+      { word: 'elicit', phonetic: '/ɪˈlɪs.ɪt/', meaning: 'Gợi ra, khai thác thông tin hoặc phản ứng', example: 'The survey was designed to elicit honest responses from participants.' },
+      { word: 'dispel', phonetic: '/dɪˈspel/', meaning: 'Xua tan, xóa bỏ nghi ngờ hoặc lo lắng', example: 'The report aimed to dispel common myths about artificial intelligence.' },
+      { word: 'convey', phonetic: '/kənˈveɪ/', meaning: 'Truyền đạt, diễn đạt ý tưởng', example: 'Charts and graphs convey data more effectively than plain text.' },
+      { word: 'concurrent', phonetic: '/kənˈkɜː.rənt/', meaning: 'Xảy ra đồng thời, song song', example: 'The two projects ran concurrent to each other throughout the year.' },
+      { word: 'intrinsic', phonetic: '/ɪnˈtrɪn.zɪk/', meaning: 'Thuộc bản chất, vốn có', example: 'Learning has intrinsic value beyond its economic benefits.' },
+      { word: 'viable', phonetic: '/ˈvaɪ.ə.bəl/', meaning: 'Khả thi, có thể thực hiện được', example: 'Solar energy is now a viable alternative to fossil fuels.' },
+      { word: 'ambiguous', phonetic: '/æmˈbɪɡ.ju.əs/', meaning: 'Mơ hồ, có thể hiểu theo nhiều nghĩa', example: 'The wording of the policy was ambiguous and led to misinterpretation.' },
+      { word: 'rationale', phonetic: '/ˌræʃ.əˈnɑːl/', meaning: 'Lý do, cơ sở hợp lý của quyết định', example: 'The government explained the rationale behind the new tax reform.' },
+      { word: 'prevalent', phonetic: '/ˈprev.ə.lənt/', meaning: 'Phổ biến, lan rộng trong xã hội', example: 'Smartphone addiction is increasingly prevalent among young people.' },
+      { word: 'alleviate', phonetic: '/əˈliː.vi.eɪt/', meaning: 'Giảm bớt, xoa dịu vấn đề', example: 'Flexible working hours can alleviate stress and improve productivity.' },
+      { word: 'hinder', phonetic: '/ˈhɪn.dər/', meaning: 'Cản trở, gây khó khăn cho sự tiến bộ', example: 'Lack of funding continues to hinder research in developing countries.' },
+      { word: 'scrutinise', phonetic: '/ˈskruː.tɪ.naɪz/', meaning: 'Xem xét kỹ lưỡng, kiểm tra chặt chẽ', example: 'Auditors scrutinised every transaction during the financial review.' },
+      { word: 'cumulative', phonetic: '/ˈkjuː.mjʊ.lə.tɪv/', meaning: 'Tích lũy dần, cộng dồn theo thời gian', example: 'The cumulative effect of small changes can be significant over time.' },
+      { word: 'magnitude', phonetic: '/ˈmæɡ.nɪ.tjuːd/', meaning: 'Quy mô, tầm quan trọng của vấn đề', example: 'Few people grasped the full magnitude of the economic crisis.' },
+      { word: 'fluctuate', phonetic: '/ˈflʌk.tʃu.eɪt/', meaning: 'Dao động, thay đổi không ổn định', example: 'Commodity prices fluctuate depending on global supply and demand.' },
+      { word: 'arbitrary', phonetic: '/ˈɑː.bɪ.trər.i/', meaning: 'Tùy tiện, không dựa trên lý do rõ ràng', example: 'Critics argued the selection process was arbitrary and lacked transparency.' },
+      { word: 'adhere', phonetic: '/ədˈhɪər/', meaning: 'Tuân thủ, bám sát quy tắc hoặc kế hoạch', example: 'All contractors must adhere to the health and safety regulations.' },
+    ]
+  },
 ];
